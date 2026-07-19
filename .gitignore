@@ -16,3 +16,6 @@ src/bootstrap/cache/*.php
 # Local editor/OS files
 .idea/
 .vscode/
+
+*.sql
+*.bak
