@@ -19,6 +19,7 @@
         <a href="{{ route('demo.about') }}">About</a>
         <a href="{{ route('demo.services') }}">Services</a>
         <a href="{{ route('demo.contact') }}">Contact</a>
+        <a href="{{ route('demo.ai') }}">AI Demo</a>
     </nav>
 
     <div class="card">

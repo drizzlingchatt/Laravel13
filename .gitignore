@@ -1,4 +1,8 @@
 .DS_Store
+.env
+.env.*
+!.env.example
+*.log
 
 # Laravel app (mounted in ./src)
 src/.env
@@ -19,3 +23,5 @@ src/bootstrap/cache/*.php
 
 *.sql
 *.bak
+src/tourrec-426301-e1d5e7eb8f14.json
+tourrec-426301-e1d5e7eb8f14.json
