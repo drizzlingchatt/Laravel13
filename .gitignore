@@ -1,0 +1,18 @@
+.DS_Store
+
+# Laravel app (mounted in ./src)
+src/.env
+src/.env.*
+!src/.env.example
+src/vendor/
+src/node_modules/
+src/public/build/
+src/public/hot
+src/public/storage
+src/storage/*.key
+src/storage/logs/*.log
+src/bootstrap/cache/*.php
+
+# Local editor/OS files
+.idea/
+.vscode/
