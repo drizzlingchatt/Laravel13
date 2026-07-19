@@ -260,11 +260,11 @@ MONGODB_URI=mongodb://root:root@mongodb:27017
 Put real keys in `src/.env` on your own machine only. Do not commit them.
 
 ```env
-GOOGLE_APPLICATION_CREDENTIALS=./tourrec-426301-e1d5e7eb8f14.json
+GOOGLE_APPLICATION_CREDENTIALS=./key-file.json
 MODE=local
-GCP_PROJECT=tourrec-426301
-PROJECT_ID=tourrec-426301
-BUCKET_NAME=dm-fig-tw
+GCP_PROJECT=YOUR-GCP_PROJECT
+PROJECT_ID=YOUR-PROJECT_ID
+BUCKET_NAME=YOUR-BUCKET_NAME
 GEMINI_API_KEY=your-gemini-api-key
 API_KEY=your-app-api-key
 ```
@@ -280,10 +280,10 @@ GEMINI_API_KEY=your-gemini-api-key
 If you are using Google Cloud services together with Gemini, also set:
 
 ```env
-GOOGLE_APPLICATION_CREDENTIALS=./tourrec-426301-e1d5e7eb8f14.json
-GCP_PROJECT=tourrec-426301
-PROJECT_ID=tourrec-426301
-BUCKET_NAME=dm-fig-tw
+GOOGLE_APPLICATION_CREDENTIALS=./key-file.json
+GCP_PROJECT=YOUR-GCP_PROJECT
+PROJECT_ID=YOUR-PROJECT_ID
+BUCKET_NAME=YOUR-BUCKET_NAME
 MODE=local
 ```
 
