@@ -243,6 +243,7 @@ After first boot, update `src/.env` as needed. Defaults expected by this compose
 
 ```env
 DB_CONNECTION=mysql
+DB_ROOT_PASSWORD=root
 DB_HOST=mysql
 DB_PORT=3306
 DB_DATABASE=laravel
@@ -296,3 +297,17 @@ docker compose exec app php artisan cache:clear
 ```
 
 Keep the credentials JSON on your own machine only and never commit real keys to GitHub.
+
+Backup:
+
+```bash
+docker exec laravel /usr/bin/mysqldump \
+  -u root --password=laravel laravel > backup_$(date +%Y%m%d_%H%M%S).sql
+```
+
+Restore:
+
+```bash
+cat backup_file.sql | docker exec -i django_db /usr/bin/mysql \
+  -u root --password=laravel laravel
+```
