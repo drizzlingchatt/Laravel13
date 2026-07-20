@@ -83,7 +83,7 @@ docker compose exec app bash
 docker compose exec mysql mysql -u laravel -plaravel laravel
 
 # Redis CLI
-docker compose exec redis redis-cli
+docker compose exec redis redis-cli -a laravel_secure_password
 
 # MongoDB shell
 docker compose exec mongodb mongosh -u root -p root
@@ -192,8 +192,8 @@ git push origin v1.0.0
 | MySQL    | 127.0.0.1:3306        | user: `laravel` / pass: `laravel` |
 | phpMyAdmin | http://localhost:8081 | user: `root` / pass: `root`     |
 | MongoDB  | 127.0.0.1:27017       | user: `root` / pass: `root`       |
-| Redis    | 127.0.0.1:6379        | —                                 |
-| Redis Insight | http://localhost:5540 | connect to host `redis`, port `6379` |
+| Redis    | 127.0.0.1:6379        | pass: `laravel_secure_password`   |
+| Redis Insight | http://localhost:5540 | connect to host `redis`, port `6379`, pass: `laravel_secure_password` |
 
 ---
 
@@ -251,6 +251,7 @@ DB_PASSWORD=laravel
 
 REDIS_HOST=redis
 REDIS_PORT=6379
+REDIS_PASSWORD=laravel_secure_password
 
 MONGODB_URI=mongodb://root:root@mongodb:27017
 ```
