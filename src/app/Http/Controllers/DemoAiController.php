@@ -12,6 +12,14 @@ use function Laravel\Ai\agent;
 
 class DemoAiController extends Controller
 {
+    private const LOCALE_LANGUAGE_MAP = [
+        'en' => 'English',
+        'zh_TW' => 'Traditional Chinese',
+        'ja' => 'Japanese',
+        'es' => 'Spanish',
+        'fr' => 'French',
+    ];
+
     public function show(): View
     {
         return view('demo.ai', [
@@ -29,6 +37,9 @@ class DemoAiController extends Controller
             'prompt' => ['required', 'string', 'max:4000'],
         ]);
 
+        $locale = app()->getLocale();
+        $targetLanguage = self::LOCALE_LANGUAGE_MAP[$locale] ?? self::LOCALE_LANGUAGE_MAP['en'];
+
         $aiRequest = AiRequest::create([
             'provider' => Lab::Gemini->value,
             'model' => null,
@@ -41,12 +52,12 @@ class DemoAiController extends Controller
         if (! filled(config('ai.providers.gemini.key'))) {
             $aiRequest->update([
                 'status' => 'config_error',
-                'error_message' => 'Set GEMINI_API_KEY in src/.env before testing the AI demo page.',
+                'error_message' => __('demo.ai.config_error'),
             ]);
 
             return response()->view('demo.ai', [
                 'answer' => null,
-                'configError' => 'Set GEMINI_API_KEY in src/.env before testing the AI demo page.',
+                'configError' => __('demo.ai.config_error'),
                 'hasGeminiKey' => false,
                 'history' => AiRequest::query()->latest()->limit(10)->get(),
                 'prompt' => $validated['prompt'],
@@ -54,9 +65,18 @@ class DemoAiController extends Controller
         }
 
         $response = agent(
-            instructions: 'You are a concise demo assistant for a Laravel application. Answer clearly and keep responses short.'
+            instructions: implode(' ', [
+                'You are a concise demo assistant for a Laravel application.',
+                'Always respond in '.$targetLanguage.'.',
+                'Keep responses clear and short.',
+                'If the user explicitly requests a different language, follow the user request.',
+            ])
         )->prompt(
-            $validated['prompt'],
+            implode("\n", [
+                'User locale: '.$locale,
+                'Target response language: '.$targetLanguage,
+                'User prompt: '.$validated['prompt'],
+            ]),
             provider: Lab::Gemini,
         );
 

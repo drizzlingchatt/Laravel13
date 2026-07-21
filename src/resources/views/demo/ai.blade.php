@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Demo</title>
+    <title>{{ __('demo.ai.title') }}</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 0; background: #f6f8fb; color: #1f2937; }
         .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
         nav a { margin-right: 1rem; color: #2563eb; text-decoration: none; font-weight: 600; }
+        .locale-switch { margin-top: 0.75rem; }
+        .locale-switch a { margin-right: 0.75rem; font-size: 0.9rem; color: #4b5563; text-decoration: none; }
+        .locale-switch a.active { font-weight: 700; color: #111827; text-decoration: underline; }
         .card { margin-top: 1.5rem; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1.25rem; }
         .notice { margin-top: 1rem; padding: 0.9rem 1rem; border-radius: 8px; }
         .notice.warn { background: #fff7ed; border: 1px solid #fdba74; color: #9a3412; }
@@ -22,21 +25,27 @@
 </head>
 <body>
 <div class="container">
-    <h1>AI Demo</h1>
+    <h1>{{ __('demo.ai.heading') }}</h1>
     <nav>
-        <a href="{{ route('demo.home') }}">Home</a>
-        <a href="{{ route('demo.about') }}">About</a>
-        <a href="{{ route('demo.services') }}">Services</a>
-        <a href="{{ route('demo.contact') }}">Contact</a>
-        <a href="{{ route('demo.ai') }}">AI Demo</a>
+        <a href="{{ route('demo.home') }}">{{ __('demo.nav.home') }}</a>
+        <a href="{{ route('demo.about') }}">{{ __('demo.nav.about') }}</a>
+        <a href="{{ route('demo.services') }}">{{ __('demo.nav.services') }}</a>
+        <a href="{{ route('demo.contact') }}">{{ __('demo.nav.contact') }}</a>
+        <a href="{{ route('demo.ai') }}">{{ __('demo.nav.ai') }}</a>
     </nav>
 
+    <div class="locale-switch">
+        @foreach (config('app.supported_locales', []) as $code => $label)
+            <a href="{{ route('locale.switch', ['locale' => $code]) }}" class="{{ app()->getLocale() === $code ? 'active' : '' }}">{{ $label }}</a>
+        @endforeach
+    </div>
+
     <div class="card">
-        <p>Test the Laravel AI SDK with Gemini by entering a prompt below.</p>
+        <p>{{ __('demo.ai.intro') }}</p>
 
         @if (! $hasGeminiKey)
             <div class="notice warn">
-                Gemini is not configured yet. Add <code>GEMINI_API_KEY</code> to <code>src/.env</code> to enable live responses.
+                {{ __('demo.ai.missing_key_notice') }}
             </div>
         @endif
 
@@ -54,39 +63,39 @@
 
         @if ($answer)
             <div class="notice ok">
-                Gemini returned a response successfully.
+                {{ __('demo.ai.success_notice') }}
             </div>
         @endif
 
         <form method="POST" action="{{ route('demo.ai.store') }}">
             @csrf
-            <label class="label" for="prompt">Prompt</label>
-            <textarea id="prompt" name="prompt" placeholder="Example: Write a 3-day Kuala Lumpur travel plan.">{{ old('prompt', $prompt) }}</textarea>
-            <button type="submit">Ask Gemini</button>
+            <label class="label" for="prompt">{{ __('demo.ai.prompt_label') }}</label>
+            <textarea id="prompt" name="prompt" placeholder="{{ __('demo.ai.prompt_placeholder') }}">{{ old('prompt', $prompt) }}</textarea>
+            <button type="submit">{{ __('demo.ai.submit_button') }}</button>
         </form>
     </div>
 
     @if ($answer)
         <div class="card">
-            <h2>Response</h2>
+            <h2>{{ __('demo.ai.response_title') }}</h2>
             <div class="answer">{{ $answer }}</div>
         </div>
     @endif
 
     <div class="card">
-        <h2>Recent AI Requests</h2>
+        <h2>{{ __('demo.ai.history_title') }}</h2>
 
         @if ($history->isEmpty())
-            <p>No AI requests have been recorded yet.</p>
+            <p>{{ __('demo.ai.history_empty') }}</p>
         @else
             <div style="overflow-x: auto;">
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>
                     <tr>
-                        <th style="text-align: left; border-bottom: 1px solid #e5e7eb; padding: 0.5rem;">Time</th>
-                        <th style="text-align: left; border-bottom: 1px solid #e5e7eb; padding: 0.5rem;">Provider</th>
-                        <th style="text-align: left; border-bottom: 1px solid #e5e7eb; padding: 0.5rem;">Status</th>
-                        <th style="text-align: left; border-bottom: 1px solid #e5e7eb; padding: 0.5rem;">Prompt</th>
+                        <th style="text-align: left; border-bottom: 1px solid #e5e7eb; padding: 0.5rem;">{{ __('demo.ai.table.time') }}</th>
+                        <th style="text-align: left; border-bottom: 1px solid #e5e7eb; padding: 0.5rem;">{{ __('demo.ai.table.provider') }}</th>
+                        <th style="text-align: left; border-bottom: 1px solid #e5e7eb; padding: 0.5rem;">{{ __('demo.ai.table.status') }}</th>
+                        <th style="text-align: left; border-bottom: 1px solid #e5e7eb; padding: 0.5rem;">{{ __('demo.ai.table.prompt') }}</th>
                     </tr>
                     </thead>
                     <tbody>
